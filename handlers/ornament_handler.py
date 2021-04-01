@@ -1,4 +1,5 @@
 import json
+import logging
 from flask import Blueprint, request
 
 from status import Status
@@ -9,6 +10,7 @@ ORNAMENT = Blueprint(
     __name__,
     url_prefix='/api/V1'
 )
+LOG = logging.getLogger(__name__)
 
 
 @ORNAMENT.route('/ornament', methods=['POST'])
@@ -24,6 +26,12 @@ def get_all_ornament():
     return json.dumps({'ornaments': ornament}), Status.HTTP_200_OK
 
 
+@ORNAMENT.route('/ornament/<_id>')
+def get_ornament_by_id(_id):
+    ornament = OrnamentService.get_ornament_by_id(_id)
+    return json.dumps({'ornament': ornament}), Status.HTTP_200_OK
+
+
 @ORNAMENT.route('/ornament', methods=['PUT'])
 def update_ornament():
     params = request.get_json()
@@ -34,4 +42,4 @@ def update_ornament():
 @ORNAMENT.route('/ornament/<ID>', methods=['DELETE'])
 def delete_ornament(ID):
     OrnamentService.delete_ornament(ID)
-    return json.dumps({'message': 'ornament deleted successfully'}), Status.HTTP_200_OK
+    return json.dumps({'message': ID}), Status.HTTP_200_OK

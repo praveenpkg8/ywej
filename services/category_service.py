@@ -6,7 +6,12 @@ class CategoryService:
     @staticmethod
     def add_category(category):
         name = category.get('name')
-        Category.create_category(name)
+        material = category.get('material')
+
+        Category.create_category(
+            name=name,
+            material=material
+        )
 
     @staticmethod
     def get_all_categories():
@@ -16,6 +21,7 @@ class CategoryService:
             _category = dict(
                 id=ornament.id,
                 name=ornament.name,
+                material=ornament.material
             )
             data.append(_category)
         return data
@@ -25,10 +31,10 @@ class CategoryService:
         Category.modify_ornament(
             _id=category.get('id'),
             name=category.get('name'),
+            material=category.get('material')
 
         )
 
     @staticmethod
     def delete_category(_id):
         Category.delete_category(_id)
-

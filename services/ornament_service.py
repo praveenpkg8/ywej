@@ -1,4 +1,9 @@
+import logging
+
 from models.ornament import Ornament
+from models.category import Category
+
+LOG = logging.getLogger(__name__)
 
 
 class OrnamentService:
@@ -19,18 +24,38 @@ class OrnamentService:
         )
 
     @staticmethod
+    def get_ornament_by_id(_id):
+        ornament = Ornament.get_ornament_by_id(_id=_id)
+        category = Category.get_category_by_id(category_id=ornament.category_id)
+        ornament_dict = dict(
+            id=ornament.id,
+            name=ornament.name,
+            weight=ornament.weight,
+            wastage=ornament.wastage,
+            making_charge=ornament.making_charge,
+            category_id=ornament.category_id,
+            category_name=category.name,
+            category_material=category.material
+        )
+        return ornament_dict
+
+    @staticmethod
     def get_all_ornaments():
         ornaments = Ornament.get_all_ornaments()
         data = []
         for ornament in ornaments:
-            final_note = dict(
+            category = Category.get_category_by_id(category_id=ornament.category_id)
+            ornament_dict = dict(
                 id=ornament.id,
                 name=ornament.name,
                 weight=ornament.weight,
                 wastage=ornament.wastage,
-                making_charge=ornament.making_charge
+                making_charge=ornament.making_charge,
+                category_id=ornament.category_id,
+                category_name=category.name,
+                category_material=category.material
             )
-            data.append(final_note)
+            data.append(ornament_dict)
         return data
 
     @staticmethod
@@ -41,7 +66,7 @@ class OrnamentService:
             weight=ornament.get('weight'),
             wastage=ornament.get('wastage'),
             making_charge=ornament.get('making_charge'),
-
+            category_id=ornament.get('category_id'),
         )
 
     @staticmethod

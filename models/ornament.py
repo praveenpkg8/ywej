@@ -1,6 +1,10 @@
 import uuid
+import logging
 import datetime
-from models import db 
+from models import db
+
+LOG = logging.getLogger(__name__)
+
 
 
 class Ornament(db.Model):
@@ -12,6 +16,7 @@ class Ornament(db.Model):
     weight = db.Column(db.Float())
     wastage = db.Column(db.Float())
     making_charge = db.Column(db.Float())
+    category_id = db.Column(db.String(128))
 
     def __init__(
             self,
@@ -48,6 +53,11 @@ class Ornament(db.Model):
     @staticmethod
     def get_all_ornaments():
         ornaments = Ornament.query.all()
+        return ornaments
+
+    @staticmethod
+    def get_ornament_by_id(_id):
+        ornaments = Ornament.query.get(_id)
         return ornaments
 
     @staticmethod
